@@ -1,0 +1,31 @@
+name: PR142 all 276 coordinate restrictions
+on:
+  push:
+    branches: [research/pr142-coordinate-subset-search]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-structural-search:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with: {python-version: '3.11'}
+      - name: Screen all 276 pinned PR117 restrictions and exact root supports
+        run: python3 research/pr142-coordinate-subsets/coordinate_search.py --top 20 --output /tmp/coordinate-search.json
+      - name: Validate completeness of search
+        run: |
+          python3 - <<'PY'
+          import json
+          x=json.load(open('/tmp/coordinate-search.json'))
+          assert x['examined_subsets']==276
+          assert x['valid_root_checks'] is True
+          assert x['baseline_pr142']['omitted']==[22,23]
+          assert x['baseline_pr142']['additions_created']==66234
+          print('Best alternatives:', x['best'][:6])
+          print('PR142 baseline live rank:',x['baseline_live_rank'])
+          PY
+      - run: git diff --exit-code
