@@ -1,4 +1,4 @@
-# PR142 h22 coordinate-pair restriction search
+# PR142 sequential cover: h22/h21/h20 structural restriction search
 
 **Scope:** Exhaustive deterministic **structural** exploration only, not a
 proved multiplication improvement. The best published live result as of the
@@ -36,3 +36,31 @@ The branch inherits PR142 with all its contributors and source notices:
 eumemic, icekylinx, an664, jamesyc, ikeboy, Zhihao Chen, Swapnil Jain,
 and the historic PR117 witness. Exploration prepared with OpenAI
 assistance.
+
+## Additional h21 and h20 search
+
+The same branch now includes `nested_restrictions.py`. It reads
+**PR142's immutable, SHA256-pinned h22 restricted scalar DAG** and
+tries all 22 choices of one additional omitted coordinate and all 231
+choices of two additional omitted coordinates. Each derived 21- or
+20-coordinate DAG undergoes the same exact disjoint-addition and
+D/P/A-support tests as h22. It backward-traces all surviving roots
+and counts only additions that are *actually live*.
+
+The source h22 live-addition count is required to equal **64,140**;
+its original generated-addition count is required to equal 66,234.
+These are **structural** statistics, not paid recursive moments or
+multiplication exponents. Moving to ambient dimension 63 or 60 would
+also change the complete group geometry, bit/complex balance,
+normalizers, and every interface described above.
+
+```sh
+python3 research/pr142-coordinate-subsets/nested_restrictions.py --top 25 --output /tmp/nested-search.json
+```
+
+The +3% target over PR142 is
+`κ >= 0.00043275553344741`. Even a statistically smaller h21/h20
+DAG is **not a new record** until its full independent physical
+compiler, literal readout/inverse replay, paid sequential cover and
+exact 47-constraint certificate exist. We explicitly reject merging
+cores in parallel on one dirty role, as disproved in PR132/PR139.
