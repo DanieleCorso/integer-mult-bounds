@@ -137,6 +137,23 @@ def main():
     require(Counter(flat)==Counter(range(v)), "partition must cover each triple once")
     require(Counter(map(len, groups))=={21:83,7:4}, "unexpected restricted group sizes")
 
+    # IMPORTANT NEGATIVE CONTROL: the PR129 bit supplier uses the
+    # RATIONAL form H=9I-J, not our F2 parity form. For triple vectors
+    # t_T^T H t_U=9*(|T intersect U|-1), which is zero precisely when
+    # distinct triples meet in one point. The PR128 complex signed group
+    # construction does NOT meet this requirement after restricting h=24
+    # to h=23; hence these grouped bit-core exteriors cannot be claimed.
+    rational_overlap_counts = Counter()
+    for group in groups:
+        for i in range(len(group)):
+            for j in range(i+1,len(group)):
+                intersection_size=(masks[group[i]] & masks[group[j]]).bit_count()
+                rational_overlap_counts[intersection_size]+=1
+    rational_pair_count=sum(rational_overlap_counts.values())
+    rational_orthogonal_pairs=rational_overlap_counts[1]
+    rational_nonorthogonal_pairs=rational_pair_count-rational_orthogonal_pairs
+    require(rational_nonorthogonal_pairs>0,
+            "Negative control unexpectedly valid: re-evaluate proof")
     signatures = Counter()
     tested_gram = tested_phase = 0
     x_tests = [0]
@@ -212,12 +229,20 @@ def main():
     require(complex_pr128<target, "complex bottleneck check changed")
 
     result = {
-        "status":"PASS exact geometry and conditional moment screen; NOT a physical proof",
+        "status":"PASS F2 geometry and formal moment; FAIL PR129 rational H-orthogonality; proposed physical bit sharing NOT valid",
         "baseline":"PR128 commit 530588a019b4a74f09180680c9e3961bf649ec89",
         "triples":v,"groups":len(groups),
         "group_counts":dict(Counter(map(len,groups))),
         "gram_entries_checked":tested_gram,
         "quadratic_phase_cases":tested_phase,
+        "rational_H_overlap_counts":dict(sorted(rational_overlap_counts.items())),
+        "rational_H_total_pairs":rational_pair_count,
+        "rational_H_orthogonal_pairs":rational_orthogonal_pairs,
+        "rational_H_nonorthogonal_pairs":rational_nonorthogonal_pairs,
+        "counterexample":{"group":0,"first_triple":[0,6,12],
+                          "second_triple":[0,6,18],
+                          "intersection":2,"rational_H_inner_product":9},
+        "legal_bit_supplier_certified":False,
         "signed_complements":[
           {"group_dimension":d,"complement_dimension":c,
            "gauss_real":re,"gauss_imag":im,"groups":n}
@@ -237,6 +262,7 @@ def main():
         "target_plus_three_percent":str(target),
         "pr128_unchanged_complex_ceiling":str(complex_pr128),
         "required_before_final_kappa_claim":[
+            "Replace current H-incompatible partition with a valid H-orthogonal sharing scheme",
             "formal independently restored bit-core scratch identity",
             "literal forward/reflected physical frame schedule for shared roles",
             "paid signed Gaussian normal forms for -2 and -256i complements",
