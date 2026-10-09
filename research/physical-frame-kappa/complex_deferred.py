@@ -349,7 +349,24 @@ def main():
     def gauge(constraints):
         B = kernel(constraints, h)
         return tuple(B) if nondeg(B) else safe_subspace(B, ())
-    for s in sorted(cand, key=lambda s: (-len(cand[s]), len(reach[s]), s)):
+    # Adaptive priority: retain large available binary frames first, and
+    # prefer the smaller target footprint only when its estimated fresh
+    # exterior/first-transition gain is otherwise comparable.  A tuning
+    # configuration changes just the legal candidate order; every accepted
+    # gauge and the complete physical word still undergo independent audits.
+    import os
+    priority = os.environ.get('KAPPA_DEFERRAL_PRIORITY', 'baseline')
+    if priority == 'baseline':
+        order_key = lambda s: (-len(cand[s]), len(reach[s]), s)
+    elif priority == 'footprint':
+        order_key = lambda s: (len(reach[s]), -len(cand[s]), s)
+    elif priority == 'size-weighted':
+        order_key = lambda s: (-len(cand[s])/(1 + 0.1*len(reach[s])), len(reach[s]), s)
+    elif priority == 'gain-density':
+        order_key = lambda s: (-(len(cand[s])**2)/(1+len(reach[s])), len(reach[s]), s)
+    else:
+        raise ValueError('Unknown KAPPA_DEFERRAL_PRIORITY: '+priority)
+    for s in sorted(cand, key=order_key):
         rows = list(kernel(cand[s], h))
         for t in sorted(reach[s]):
             rows.append(tmask[t])
