@@ -86,12 +86,19 @@ The **opt-in end-to-end trial** is:
 python3 research/pr142-coordinate-subsets/trial_max_matching.py
 ```
 
-**Use a disposable checkout** because the original PR142 producer writes
-`complex-profile.json` and `reuse-pairs.json`. This trial recompiles the
-entire selected h22 physical network, checks source/target output and
-scratch cancellation against random exact field values, and reports
-the actual matched role count. If it finds additional legal reuse, the
-literal reflection audit, paid source gauges, derived rank histogram,
-entire padded triple cover, all-scalar charges, and certified final κ
-must be regenerated and independently verified. No new κ is asserted
-in this experimental branch.
+The trial now uses PR142's own **read-only AST state capture**
+rather than writing the original `complex-profile.json` or
+`reuse-pairs.json`. It recompiles the h22 physical word using
+maximum-cardinality donor matching, checks target recovery and
+arbitrary-dirty scratch cancellation, and invokes the original
+**complete literal signed/reflected scalar/frame audit** on the
+candidate state. It reports new physical role stock and exact
+additional reuse, or zero improvement if no additional legal pairs
+are available. These same checks also run in their own 55-minute CI job.
+
+Even if additional physical reuse passes, it is **not yet a new κ**:
+the compensated source-gauge inventory and rank histogram must be
+propagated into the paid sequential padded cover, all finite scalar
+and semantic charges recalculated, the bit supplier checked and the
+47 strict coupled assembly constraints and seven margins independently
+certified. No exponent improvement is claimed by this trial.
