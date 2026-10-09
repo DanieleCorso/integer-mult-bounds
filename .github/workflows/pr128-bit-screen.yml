@@ -1,4 +1,4 @@
-name: PR128 bit-core sharing arithmetic screen
+name: PR128 restricted bit groups - rational-H negative control
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ permissions:
   contents: read
 jobs:
   exact-screen:
-    name: Exact geometry, signed phase and rational moment (Python ${{ matrix.python-version }})
+    name: Rational-H counterexample and screened moment (Python ${{ matrix.python-version }})
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
@@ -30,6 +30,15 @@ jobs:
         run: |
           python3 research/pr128-zero-frame-sharing-screen/verify_screen.py > /tmp/bit-screen.json
           python3 -m json.tool /tmp/bit-screen.json > /dev/null
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/bit-screen.json'))
+          assert r['rational_H_orthogonal_pairs']==0
+          assert r['rational_H_nonorthogonal_pairs']==17514
+          assert r['legal_bit_supplier_certified'] is False
+          assert r['status'].startswith('PASS F2 geometry and formal moment; FAIL PR129')
+          print('PASS negative control: the hypothesized +10.83% bit result is NOT legal')
+          PY
           cat /tmp/bit-screen.json
       - name: Check tracked artifacts unchanged
         run: git diff --exit-code
