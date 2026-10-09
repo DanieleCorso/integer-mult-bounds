@@ -19,6 +19,8 @@ jobs:
         with:
           python-version: '3.11'
       - name: Regenerate exact certificate, independent receipt and source pins
+        env:
+          KAPPA_DEFERRAL_PRIORITY: gain-density
         run: |
           python3 research/physical-frame-kappa/complex_deferred.py
           python3 research/physical-frame-kappa/certificate.py --write
