@@ -152,8 +152,12 @@ def main():
     rational_pair_count=sum(rational_overlap_counts.values())
     rational_orthogonal_pairs=rational_overlap_counts[1]
     rational_nonorthogonal_pairs=rational_pair_count-rational_orthogonal_pairs
-    require(rational_nonorthogonal_pairs>0,
-            "Negative control unexpectedly valid: re-evaluate proof")
+    require(rational_overlap_counts=={0:15012,2:2502}
+            and rational_pair_count==17514 and rational_orthogonal_pairs==0,
+            "Pinned rational-H negative control changed: re-evaluate proof")
+    require(tuple(masks[groups[0][i]] for i in (0,1))
+            ==((1<<0)|(1<<6)|(1<<12),(1<<0)|(1<<6)|(1<<18)),
+            "Pinned rational-H counterexample pair changed")
     signatures = Counter()
     tested_gram = tested_phase = 0
     x_tests = [0]
