@@ -18,3 +18,18 @@ The original graph and matching profile are reproduced exactly. Each candidate i
 **Research direction:** Optimize `c − matched` rather than `c`; preserve carrier-friendly internal subexpressions and investigate full-word physical frame savings. None of the current candidates qualifies for a +3% κ claim. Do not merge as an exponent improvement.
 
 Original paired-cube graph, decoder and matching lineage: icekylinx/eumemic. Independent reproduction and candidate research with OpenAI assistance. Original licenses and notices retained.
+
+## Exhaustive single-node reassociation audit
+
+We additionally enumerated **all 61** alternative disjoint-support two-operand factorizations of the **442 existing addition nodes** in the frozen eleven-coordinate pair module, preserving each node's exact input-support mask and every output value. Each candidate was inserted independently in all 24 copies of the module in the full p=12 word and given a **fresh** maximum cardinality carrier matching under the retained rational frame eligibility constraints.
+
+The original graph/geometry/matcher exactly reproduced `c=23260, q=6624, matched=10096, R=19788` as a positive control. The exhaustive single-rewrite results were:
+
+- **30** variants: `R=19836` (48 worse)
+- **29** variants: `R=19812` (24 worse)
+- **2** variants: `R=19788` (neutral), namely module node 151 redefined as `[91,145]` and module node 155 as `[66,150]`
+- **0** variants improved `R`
+
+The two neutral rewrites together also leave `R=19788`. All **13** pairs of alternative rewrites with a direct operand dependency were tested: seven lose 48, five lose 72, and one loses 96 units of `R`. No dependent pair improved the matching. All 74 exhaustive single/dependent candidate invocations finished without an algebraic test error.
+
+**Implication:** This is a verified local negative search result within the fixed-support, existing-node reassociation neighborhood, **not a global optimum claim**. Larger structural changes, new intermediate supports, revised matching strategies, and genuine physical frame/reuse optimizations remain open. This research does not meet the requested +3% conditional κ publication threshold. The new leading upstream conditional PR179 is external and is not claimed as our contribution.
