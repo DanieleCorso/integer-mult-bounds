@@ -1,0 +1,35 @@
+name: PR128 bit-core sharing arithmetic screen
+on:
+  push:
+    branches:
+      - research/pr128-zero-frame-sharing-screen
+  pull_request:
+    paths:
+      - 'research/pr128-zero-frame-sharing-screen/**'
+      - '.github/workflows/pr128-bit-screen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-screen:
+    name: Exact geometry, signed phase and rational moment (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.13', '3.14']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run exact hypothesis screen (not a physical certificate)
+        run: |
+          python3 research/pr128-zero-frame-sharing-screen/verify_screen.py > /tmp/bit-screen.json
+          python3 -m json.tool /tmp/bit-screen.json > /dev/null
+          cat /tmp/bit-screen.json
+      - name: Check tracked artifacts unchanged
+        run: git diff --exit-code
