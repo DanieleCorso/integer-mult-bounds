@@ -45,7 +45,9 @@ def gf_basis(vectors, width):
 def nullspace(vectors, width):
     # Reduced echelon form of the rows of the orthogonality constraints.
     piv = gf_basis(vectors, width)
-    for j in sorted(piv):
+    # Descending pivots prevent a later XOR from reintroducing an
+    # already-eliminated (higher) pivot column.
+    for j in sorted(piv, reverse=True):
         for k in piv:
             if j != k and (piv[k] >> j) & 1:
                 piv[k] ^= piv[j]
