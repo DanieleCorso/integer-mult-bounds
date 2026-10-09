@@ -17,5 +17,7 @@ jobs:
         run: python3 -B research/bit-pair-cse/verify_both.py
       - name: Independently verify n=10 and n=11 candidate modules
         run: python3 -B research/bit-pair-cse/verify_optimized_modules.py
+      - name: Exact 1760-target decoder and 8800 root-cap checks with tamper controls
+        run: python3 -B research/bit-pair-cse/verify_full_decoder.py
       - name: Full bit candidate including physical frame geometry
         run: python3 -B research/bit-pair-cse/trial.py --variant both
