@@ -1,0 +1,17 @@
+name: Bit-pair 397 candidate (no kappa claim)
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/paired-cube-6558-bit-pair-cse
+jobs:
+  pair-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Full bit candidate including physical frame geometry
+        run: python3 -B research/bit-pair-cse/trial.py --variant both
