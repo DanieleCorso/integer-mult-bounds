@@ -70,6 +70,16 @@ def main():
     complement = smaller_allbut(10)
     assert check(pair, 11) == 397 and verify_allbut(complement) == 24
     result = examine(pair, complement)
+    # Mutation controls: wrong local roots must fail the full 1760-port decoder.
+    wrong_pair = dict(pair, roots=list(pair["roots"]))
+    wrong_pair["roots"][0] = wrong_pair["roots"][1]
+    bad_pair = bit.BitGraph(12).finish(wrong_pair, complement, merge=True, l1=True)
+    assert bit.check_decoder(bad_pair) == 80
+    wrong_q = dict(complement, roots=list(complement["roots"]))
+    wrong_q["roots"][0] = wrong_q["roots"][1]
+    bad_q = bit.BitGraph(12).finish(pair, wrong_q, merge=True, l1=True)
+    assert bit.check_decoder(bad_q) == 440
+    result["mutation_controls_rejected"] = ["wrong_pair_root", "wrong_complement_root"]
     baseline = json.loads(
         (ROOT / "research/paired-cube-bit/out/profile_p12.json").read_text()
     )
