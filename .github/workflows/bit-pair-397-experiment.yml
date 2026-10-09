@@ -15,5 +15,7 @@ jobs:
           python-version: '3.11'
       - name: Independent exact n10 and n11 module verification
         run: python3 -B research/bit-pair-cse/verify_both.py
+      - name: Independently verify n=10 and n=11 candidate modules
+        run: python3 -B research/bit-pair-cse/verify_optimized_modules.py
       - name: Full bit candidate including physical frame geometry
         run: python3 -B research/bit-pair-cse/trial.py --variant both
