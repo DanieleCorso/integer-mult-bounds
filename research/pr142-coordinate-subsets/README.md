@@ -64,3 +64,34 @@ DAG is **not a new record** until its full independent physical
 compiler, literal readout/inverse replay, paid sequential cover and
 exact 47-constraint certificate exist. We explicitly reject merging
 cores in parallel on one dirty role, as disproved in PR132/PR139.
+
+## Optional live compiler trial (not a new certificate)
+
+`max_matching.py` is an exact maximum-cardinality donor matching
+alternative to the inherited greedy PR142 `reuse.select_reuse`.
+It groups identical GF(2) donor and deferred-birth subspaces, constructs
+the complete admissible donor⊆recipient bipartite capacity network,
+and solves it with deterministic integer Dinic maxflow. Every proposed
+pair passes the **original** PR142 `reuse.check_pairs` before use.
+Unlike our earlier invalid lockstep idea, this changes only the
+*within-one-completed-core* chronological donor/birth aliasing.
+
+`test_max_matching.py` compares 792 independently randomized
+small GF(2) matching problems with brute-force optimal solutions
+and includes a concrete greedy-failure case.
+
+The **opt-in end-to-end trial** is:
+
+```sh
+python3 research/pr142-coordinate-subsets/trial_max_matching.py
+```
+
+**Use a disposable checkout** because the original PR142 producer writes
+`complex-profile.json` and `reuse-pairs.json`. This trial recompiles the
+entire selected h22 physical network, checks source/target output and
+scratch cancellation against random exact field values, and reports
+the actual matched role count. If it finds additional legal reuse, the
+literal reflection audit, paid source gauges, derived rank histogram,
+entire padded triple cover, all-scalar charges, and certified final κ
+must be regenerated and independently verified. No new κ is asserted
+in this experimental branch.
