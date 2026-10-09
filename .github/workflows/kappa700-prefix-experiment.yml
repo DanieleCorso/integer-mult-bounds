@@ -1,0 +1,19 @@
+name: Experimental prefix/suffix kappa research
+on:
+  push:
+    branches: [research/kappa700-prefix-suffix-20261009]
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install numpy scipy
+      - name: Recheck frozen baseline
+        run: make paired-cube-verify
+      - name: Recompile alternative, verify physical replay
+        run: python -B research/kappa700-prefix/experiment.py
